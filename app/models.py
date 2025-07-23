@@ -1,6 +1,6 @@
 from app.db import db
 from werkzeug.security import check_password_hash
-from datetime import datetime
+from datetime import datetime, timedelta, timezone
 
 
 # User Table for the Database
@@ -34,7 +34,7 @@ class Rental(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     merchant_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
-    start_date = db.Column(db.DateTime, default=datetime.utcnow)
+    start_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=3))))
     end_date = db.Column(db.DateTime, nullable=True)
 
     user = db.relationship("User", foreign_keys=[user_id], passive_deletes=True)
