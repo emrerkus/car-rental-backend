@@ -10,6 +10,8 @@ class User(db.Model):
     password = db.Column(db.String(200), nullable=False)
     role = db.Column(db.String(20), nullable=False)
 
+    cars = db.relationship("Car", backref='merchant', passive_deletes=True)
+
     def check_password(self, password):
         return check_password_hash(self.password, password)
 
@@ -19,7 +21,7 @@ class Car(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     available = db.Column(db.Boolean, default=True)
-    merchant_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    merchant_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
     brand = db.Column(db.String(50))
     color = db.Column(db.String(30))
     engine = db.Column(db.Float)

@@ -1,7 +1,7 @@
 from flask import Blueprint, jsonify, request
 from app.auth import auth
 from app.db import db
-from app.models import Rental
+from app.models import Rental, Car
 
 bp = Blueprint('user', __name__)
 
