@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify
-from app.models import Car
+from app.models import Car, Rental
 from app.db import db
 from app.auth import auth
 
@@ -145,11 +145,16 @@ def update_car(car_id):
 def delete_car(car_id):
     user = auth.current_user()
     car = Car.query.get(car_id)
+    rental = Rental.query.get(car_id)
     if not car:
         return jsonify({"ERROR": "There is no such vehicle on the platform"}), 404
 
     if not car.available:
         return jsonify({"ERROR": "This vehicle is currently on loan. It may be deleted upon return"}), 403
+
+    if user.id == car.merchant_id and rental:
+        db.session.delete(rental)
+        db.session.commit()
 
     if user.id == car.merchant_id:
         db.session.delete(car)

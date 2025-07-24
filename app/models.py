@@ -41,7 +41,7 @@ class Rental(db.Model):
 
     user = db.relationship("User", foreign_keys=[user_id], passive_deletes=True)
     merchant = db.relationship("User", foreign_keys=[merchant_id], passive_deletes=True)
-    car = db.relationship("Car", passive_deletes=True)
+    car = db.relationship("Car", foreign_keys=[car_id], passive_deletes=True)
 
 
 
