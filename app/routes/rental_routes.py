@@ -92,9 +92,11 @@ def return_car(rental_id):
     db.session.commit()
 
     total_time = rental.end_date - rental.start_date
+    total_price = total_time.total_seconds() / 3600 * car.price_per_hour
 
     return jsonify({
         "MESSAGE": f"Vehicle successfully returned, total time: {total_time}",
         "Rental ID": rental.id,
-        "Return Date": rental.end_date.strftime("%d-%m-%Y %H:%M:%S")
+        "Return Date": rental.end_date.strftime("%d-%m-%Y %H:%M:%S"),
+        "Total Payment": total_price
     }), 200

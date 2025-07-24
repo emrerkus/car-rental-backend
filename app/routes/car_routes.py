@@ -16,6 +16,7 @@ def get_all_cars():
     color = request.args.get('color')
     engine = request.args.get('engine', type=float)
     car_type = request.args.get('car_type')
+    car_price = request.args.get('price_per_hour', type=float)
 
     if brand:
         my_query = my_query.filter(Car.brand == brand)
@@ -25,6 +26,8 @@ def get_all_cars():
         my_query = my_query.filter(Car.engine == engine)
     if car_type:
         my_query = my_query.filter(Car.car_type == car_type)
+    if car_price:
+        my_query = my_query.filter(Car.price_per_hour == car_price)
 
     cars = my_query.all()
 
@@ -35,7 +38,8 @@ def get_all_cars():
         "Car Brand": car.brand,
         "Car Color": car.color,
         "Car Engine": car.engine,
-        "Car Type": car.car_type
+        "Car Type": car.car_type,
+        "Car Price": car.price_per_hour
     } for car in cars]), 200
 
 
@@ -56,7 +60,8 @@ def get_my_cars():
         "Car Brand": car.brand,
         "Car Color": car.color,
         "Car Engine": car.engine,
-        "Car Type": car.car_type
+        "Car Type": car.car_type,
+        "Car Price": car.price_per_hour
     } for car in cars]), 200
 
 
@@ -74,6 +79,7 @@ def add_car():
     color = data.get('color')
     engine = data.get('engine')
     car_type = data.get('car_type')
+    price = data.get('price_per_hour')
     merchant_id = user.id
     if not name:
         return jsonify({"ERROR": "Vehicle name not entered"}), 400
@@ -85,8 +91,11 @@ def add_car():
         return jsonify({"ERROR": "Vehicle engine not entered"}), 400
     if not car_type:
         return jsonify({"ERROR": "Vehicle type not entered"}), 400
+    if not price:
+        return jsonify({"ERROR": "Vehicle price not entered"}), 400
 
-    car = Car(name=name, merchant_id=merchant_id, brand=brand, color=color, engine=engine, car_type=car_type)
+    car = Car(name=name, merchant_id=merchant_id, brand=brand, color=color, engine=engine, car_type=car_type,
+              price_per_hour=price)
     db.session.add(car)
     db.session.commit()
     return jsonify({"MESSAGE": "Your car has been added to the platform successfully"}), 201
@@ -120,6 +129,8 @@ def update_car(car_id):
         car.engine = data['engine']
     if 'car_type' in data:
         car.car_type = data['car_type']
+    if 'price_per_hour' in data:
+        car.price_per_hour = data['price_per_hour']
 
     db.session.commit()
 

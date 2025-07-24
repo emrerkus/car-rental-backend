@@ -22,10 +22,11 @@ class Car(db.Model):
     name = db.Column(db.String(100), nullable=False)
     available = db.Column(db.Boolean, default=True)
     merchant_id = db.Column(db.Integer, db.ForeignKey('user.id', ondelete='CASCADE'), nullable=False)
-    brand = db.Column(db.String(50))
-    color = db.Column(db.String(30))
-    engine = db.Column(db.Float)
-    car_type = db.Column(db.String(50))
+    brand = db.Column(db.String(50), nullable=False)
+    color = db.Column(db.String(30), nullable=False)
+    engine = db.Column(db.Float, nullable=False)
+    car_type = db.Column(db.String(50), nullable=False)
+    price_per_hour = db.Column(db.Float, nullable=False)
 
 
 # Rental Table for the Database
