@@ -37,6 +37,7 @@ class Rental(db.Model):
     car_id = db.Column(db.Integer, db.ForeignKey('car.id'), nullable=False)
     start_date = db.Column(db.DateTime, default=datetime.now(timezone(timedelta(hours=3))))
     end_date = db.Column(db.DateTime, nullable=True)
+    total_payment = db.Column(db.Float)
 
     user = db.relationship("User", foreign_keys=[user_id], passive_deletes=True)
     merchant = db.relationship("User", foreign_keys=[merchant_id], passive_deletes=True)
